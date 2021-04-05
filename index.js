@@ -35,7 +35,8 @@ const signHandler = (body, callback) => {
             return;
         }
 
-        let cmd = 'cat '+randomFileName+' | openssl smime -sign -binary -outform DER -noattr -signer '+certificatePath+' -inkey '+privatekeyPath+' -out '+randomFileName+'.p7b && cat '+randomFileName+'.p7b | base64';
+//        let cmd = 'cat '+randomFileName+' | openssl smime -sign -binary -outform DER -noattr -signer '+certificatePath+' -inkey '+privatekeyPath+' -out '+randomFileName+'.p7b && cat '+randomFileName+'.p7b | base64';
+	  let cmd = 'cat '+randomFileName+' | openssl dgst -engine -md_gost12_256 -sign  '+certificatePath+' -inkey '+privatekeyPath+' -out '+randomFileName+'.sig && cat '+randomFileName+'.sig | base64';
         console.log(cmd);
         exec(cmd, (err, stdout, stderr) => {
             if (err) {
@@ -149,4 +150,3 @@ server.listen(port, (err) => {
     }
     console.log(`Server is listening on ${port}`)
 })
-
